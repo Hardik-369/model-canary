@@ -51,3 +51,6 @@ docker/config/
 # Logs
 *.log
 logs/
+
+# GitHub Actions workflows (requires workflow scope in token)
+.github/workflows/
