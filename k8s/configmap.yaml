@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: model-canary-config
+  namespace: model-canary
+  labels:
+    app.kubernetes.io/name: model-canary
+data:
+  model-canary.yml: |
+    version: "1"
+    project_name: my-project
+
+    providers:
+      - name: openai
+        type: openai
+        default_model: gpt-4o
+        models:
+          - gpt-4o
+          - gpt-4o-mini
+
+    storage:
+      backend: sqlite
+      connection_string: sqlite+aiosqlite:///var/lib/model-canary/data.db
+
+    alerting:
+      enabled: true
+      channels:
+        - log
+      min_severity: medium

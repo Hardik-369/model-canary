@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-canary
+  namespace: model-canary
+  labels:
+    app.kubernetes.io/name: model-canary
+    app.kubernetes.io/version: "0.1.0"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: model-canary
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: model-canary
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8311"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: model-canary
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: model-canary
+          image: ghcr.io/model-canary/model-canary:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8311
+              name: http
+              protocol: TCP
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: model-canary-secrets
+                  key: openai-api-key
+                  optional: true
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: model-canary-secrets
+                  key: anthropic-api-key
+                  optional: true
+            - name: MODEL_CANARY_CONFIG
+              value: /etc/model-canary/config.yml
+            - name: MODEL_CANARY_LOG_LEVEL
+              value: "INFO"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/model-canary
+              readOnly: true
+            - name: data
+              mountPath: /var/lib/model-canary
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: model-canary-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: model-canary-data

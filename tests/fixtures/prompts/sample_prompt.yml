@@ -1,0 +1,6 @@
+name: sample-test
+description: "Sample prompt for testing"
+prompt: "What is 2+2?"
+expected_output: "4"
+severity: low
+category: general

@@ -1,0 +1,208 @@
+[project]
+name = "model-canary"
+version = "0.1.0"
+description = "Detect AI Model Drift Before Production Does"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Model Canary Team", email = "team@modelcanary.dev" },
+]
+keywords = [
+    "llm", "ai", "monitoring", "drift-detection",
+    "openai", "anthropic", "gemini", "model-evaluation",
+    "mlops", "llmops", "observability",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Monitoring",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "typer>=0.15.0",
+    "rich>=13.9.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.7.0",
+    "httpx>=0.28.0",
+    "litellm>=1.55.0",
+    "sqlalchemy>=2.0.36",
+    "alembic>=1.14.0",
+    "numpy>=2.1.0",
+    "scipy>=1.15.0",
+    "scikit-learn>=1.6.0",
+    "sentence-transformers>=3.3.0",
+    "tabulate>=0.9.0",
+    "pyyaml>=6.0.2",
+    "tomli>=2.2.0",
+    "orjson>=3.10.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "python-multipart>=0.0.17",
+    "prometheus-client>=0.21.0",
+    "opentelemetry-api>=1.29.0",
+    "opentelemetry-sdk>=1.29.0",
+    "opentelemetry-exporter-prometheus>=0.50b0",
+    "cryptography>=44.0.0",
+    "python-jose[cryptography]>=3.3.0",
+    "apscheduler>=3.10.4",
+    "jinja2>=3.1.5",
+    "plotly>=5.25.0",
+    "duckdb>=1.2.0",
+    "aiosqlite>=0.20.0",
+    "asgi-lifespan>=2.1.0",
+    "python-dotenv>=1.0.1",
+    "sse-starlette>=2.2.0",
+    "packaging>=24.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "pytest-xdist>=3.6.0",
+    "ruff>=0.8.0",
+    "mypy>=1.14.0",
+    "pre-commit>=4.1.0",
+    "respx>=0.22.0",
+    "syrupy>=4.8.0",
+    "pytest-benchmark>=5.1.0",
+    "pytest-httpx>=0.35.0",
+    "faker>=33.0.0",
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.10",
+    "redis>=5.2.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.6.0",
+    "mkdocstrings[python]>=0.27.0",
+]
+postgres = [
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.10",
+    "sqlalchemy[asyncio]>=2.0.36",
+]
+mongo = ["motor>=3.7.0"]
+redis = ["redis>=5.2.0"]
+dashboard = [
+    "gradio>=5.12.0",
+    "streamlit>=1.41.0",
+]
+all = [
+    "model-canary[dev,postgres,mongo,redis,dashboard]",
+]
+
+[project.urls]
+homepage = "https://modelcanary.dev"
+documentation = "https://docs.modelcanary.dev"
+repository = "https://github.com/model-canary/model-canary"
+changelog = "https://github.com/model-canary/model-canary/blob/main/CHANGELOG.md"
+discord = "https://discord.gg/modelcanary"
+
+[project.scripts]
+model-canary = "model_canary.cli:app"
+mc = "model_canary.cli:app"
+
+[project.entry-points."model_canary.providers"]
+openai = "model_canary.providers.openai:OpenAIProvider"
+anthropic = "model_canary.providers.anthropic:AnthropicProvider"
+gemini = "model_canary.providers.gemini:GeminiProvider"
+mistral = "model_canary.providers.mistral:MistralProvider"
+deepseek = "model_canary.providers.deepseek:DeepSeekProvider"
+grok = "model_canary.providers.grok:GrokProvider"
+cohere = "model_canary.providers.cohere:CohereProvider"
+openrouter = "model_canary.providers.openrouter:OpenRouterProvider"
+together = "model_canary.providers.together:TogetherProvider"
+fireworks = "model_canary.providers.fireworks:FireworksProvider"
+azure_openai = "model_canary.providers.azure_openai:AzureOpenAIProvider"
+ollama = "model_canary.providers.ollama:OllamaProvider"
+vllm = "model_canary.providers.vllm:VLLMProvider"
+lm_studio = "model_canary.providers.lm_studio:LMStudioProvider"
+litellm = "model_canary.providers.litellm:LiteLLMProvider"
+custom = "model_canary.providers.custom:CustomProvider"
+
+[project.entry-points."model_canary.evaluators"]
+json = "model_canary.evaluators.json:JSONEvaluator"
+regex = "model_canary.evaluators.regex:RegexEvaluator"
+similarity = "model_canary.evaluators.similarity:SimilarityEvaluator"
+exact_match = "model_canary.evaluators.exact_match:ExactMatchEvaluator"
+contains = "model_canary.evaluators.contains:ContainsEvaluator"
+python = "model_canary.evaluators.python:PythonEvaluator"
+javascript = "model_canary.evaluators.javascript:JavaScriptEvaluator"
+llm_judge = "model_canary.evaluators.llm_judge:LLMJudgeEvaluator"
+bleu = "model_canary.evaluators.bleu:BLEUEvaluator"
+rouge = "model_canary.evaluators.rouge:ROUGEEvaluator"
+
+[project.entry-points."model_canary.alerters"]
+slack = "model_canary.alerting.slack:SlackAlerter"
+discord = "model_canary.alerting.discord:DiscordAlerter"
+github = "model_canary.alerting.github:GitHubAlerter"
+telegram = "model_canary.alerting.telegram:TelegramAlerter"
+email = "model_canary.alerting.email:EmailAlerter"
+webhook = "model_canary.alerting.webhook:WebhookAlerter"
+teams = "model_canary.alerting.teams:TeamsAlerter"
+pagerduty = "model_canary.alerting.pagerduty:PagerDutyAlerter"
+opsgenie = "model_canary.alerting.opsgenie:OpsGenieAlerter"
+
+[project.entry-points."model_canary.storage"]
+sqlite = "model_canary.storage.sqlite:SQLiteStorage"
+postgres = "model_canary.storage.postgres:PostgresStorage"
+duckdb = "model_canary.storage.duckdb:DuckDBStorage"
+mongodb = "model_canary.storage.mongodb:MongoDBStorage"
+local_json = "model_canary.storage.local_json:LocalJSONStorage"
+s3 = "model_canary.storage.s3:S3Storage"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "ANN", "ARG", "B", "C4", "DTZ", "EM", "ERA", "G", "ISC", "NPY", "PD", "PIE", "PL", "PT", "PTH", "RET", "RSE", "RUF", "SIM", "SLF", "SLOT", "T20", "TCH", "TRY", "UP", "YTT"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+minversion = "8.3"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+asyncio_mode = "auto"
+addopts = "-v --cov=src/model_canary --cov-report=term-missing --cov-report=xml --cov-report=html -n auto"
+
+[tool.coverage.run]
+source = ["src/model_canary"]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "def __repr__",
+    "def __str__",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "scimax"
+update_changelog_on_bump = true
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"

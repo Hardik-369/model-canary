@@ -1,0 +1,33 @@
+provider:
+  - changed-files:
+      - any: ["src/model_canary/providers/**"]
+evaluator:
+  - changed-files:
+      - any: ["src/model_canary/evaluators/**"]
+cli:
+  - changed-files:
+      - any: ["src/model_canary/cli/**"]
+api:
+  - changed-files:
+      - any: ["src/model_canary/api/**"]
+dashboard:
+  - changed-files:
+      - any: ["dashboard/**"]
+documentation:
+  - changed-files:
+      - any: ["docs/**", "**/*.md"]
+docker:
+  - changed-files:
+      - any: ["docker/**", "Dockerfile"]
+kubernetes:
+  - changed-files:
+      - any: ["k8s/**"]
+ci:
+  - changed-files:
+      - any: [".github/workflows/**"]
+tests:
+  - changed-files:
+      - any: ["tests/**"]
+dependencies:
+  - changed-files:
+      - any: ["pyproject.toml", "uv.lock"]

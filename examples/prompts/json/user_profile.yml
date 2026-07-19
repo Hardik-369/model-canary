@@ -1,0 +1,24 @@
+name: json-user-profile
+description: "Test JSON output formatting for user profiles"
+prompt: |
+  Return a JSON object representing a user profile with the following fields:
+  - name (string)
+  - age (integer)
+  - email (string, must be a valid email format)
+  - roles (array of strings)
+  - active (boolean)
+
+  Return ONLY valid JSON, no other text.
+required_json_schema:
+  name: string
+  age: integer
+  email: string
+  roles: array
+  active: boolean
+severity: high
+category: json
+tags:
+  - json
+  - schema
+evaluators:
+  - json

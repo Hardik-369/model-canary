@@ -1,0 +1,19 @@
+name: fibonacci-python
+description: "Test Python function generation for fibonacci sequence"
+prompt: |
+  Write a Python function that generates the Fibonacci sequence up to n terms.
+  The function should be efficient and handle edge cases.
+  Return only the code, no explanation.
+expected_output: "def fibonacci(n):"
+acceptable_outputs:
+  - "def fibonacci"
+  - "def fib"
+  - "def fibo"
+severity: medium
+category: coding
+tags:
+  - python
+  - algorithms
+evaluators:
+  - python
+  - regex

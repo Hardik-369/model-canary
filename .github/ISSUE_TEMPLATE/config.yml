@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://docs.modelcanary.dev
+    about: Read the documentation
+  - name: Discord Community
+    url: https://discord.gg/modelcanary
+    about: Join our Discord community
+  - name: GitHub Discussions
+    url: https://github.com/model-canary/model-canary/discussions
+    about: Ask questions and discuss

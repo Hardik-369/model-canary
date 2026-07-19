@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  model-canary:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: model-canary
+    ports:
+      - "8311:8311"
+    volumes:
+      - ./config:/etc/model-canary
+      - ./data:/var/lib/model-canary
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - MODEL_CANARY_LOG_LEVEL=${LOG_LEVEL:-INFO}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8311/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  model-canary-postgres:
+    image: postgres:16-alpine
+    container_name: model-canary-db
+    environment:
+      - POSTGRES_DB=model_canary
+      - POSTGRES_USER=model_canary
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    profiles:
+      - postgres
+      - full
+
+  model-canary-redis:
+    image: redis:7-alpine
+    container_name: model-canary-cache
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    profiles:
+      - redis
+      - full
+
+volumes:
+  postgres_data:

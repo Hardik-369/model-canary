@@ -1,0 +1,93 @@
+site_name: Model Canary
+site_description: Detect AI Model Drift Before Production Does
+site_url: https://docs.modelcanary.dev
+repo_url: https://github.com/model-canary/model-canary
+repo_name: model-canary/model-canary
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - scheme: default
+      primary: cyan
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+  logo: assets/logo.svg
+  favicon: assets/favicon.ico
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            docstring_style: google
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/model-canary/model-canary
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/modelcanary
+    - icon: fontawesome/brands/x-twitter
+      link: https://twitter.com/modelcanary
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - CLI Reference: cli.md
+  - API Reference: api.md
+  - Configuration: configuration.md
+  - Providers: providers.md
+  - Evaluators: evaluators.md
+  - Plugins: plugins.md
+  - Prompt Suites: prompts.md
+  - Alerting: alerting.md
+  - Storage: storage.md
+  - Deployment:
+      - Docker: deployment/docker.md
+      - Kubernetes: deployment/kubernetes.md
+      - GitHub Actions: deployment/github-actions.md
+  - Contributing: contributing.md
+  - FAQ: faq.md
+  - Troubleshooting: troubleshooting.md
+  - Roadmap: roadmap.md

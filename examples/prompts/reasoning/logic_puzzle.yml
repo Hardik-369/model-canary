@@ -1,0 +1,23 @@
+name: logic-puzzle
+description: "Test reasoning capabilities with a logic puzzle"
+prompt: |
+  Solve this logic puzzle step by step:
+
+  There are three boxes: one contains only apples, one contains only oranges,
+  and one contains both apples and oranges. The boxes are labeled, but all
+  labels are wrong. You can pick one fruit from one box without looking inside.
+  How many fruits do you need to pick to determine the contents of all boxes?
+  Explain your reasoning.
+
+  Provide your answer in the format:
+  Answer: [number]
+  Reasoning: [step by step explanation]
+severity: high
+category: reasoning
+tags:
+  - logic
+  - reasoning
+  - step-by-step
+evaluators:
+  - regex
+  - contains
